@@ -1,0 +1,125 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   codexion.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/20 22:58:30 by hel-achh          #+#    #+#             */
+/*   Updated: 2026/02/24 02:40:33 by hel-achh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CODEXION_H
+# define CODEXION_H
+
+# include <pthread.h>
+# include <sys/time.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
+# include <limits.h>
+
+typedef enum e_type
+{
+    CODEX_FIFO = 0,
+    CODEX_EDF = 1
+} t_type;
+
+typedef enum e_status
+{
+	TAKE_DONGLE,
+	COMPILING,
+	DEBUGGING,
+	REFACTORING,
+	BURNED_OUT
+}	t_status;
+
+typedef struct s_req
+{
+	int		coder_id;
+	long	arrival;
+	long	deadline;
+}	t_req;
+
+typedef struct s_heap
+{
+	t_req	*arr;
+	int		current_size;
+	int		max_size;
+}	t_heap;
+
+struct s_simulation;
+
+typedef struct s_dongle
+{
+	pthread_mutex_t	mutex;
+	pthread_cond_t	cond;
+
+	int				held_by;
+	long			cooldown_to;
+
+	t_heap			the_heap;
+}	t_dongle;
+
+typedef struct s_coder
+{
+	int				id;
+	pthread_t		thread;
+
+	pthread_mutex_t	lock;
+	long			last_compile;
+	int				compiling_counter;
+
+	t_dongle		*left;
+	t_dongle		*right;
+
+	struct s_simulation	*simulation;
+}	t_coder;
+
+typedef struct s_simulation
+{
+	int				num_coders;
+	long			time_burnout;
+	long			time_compile;
+	long			time_debug;
+	long			time_refactor;
+	int				total_compiles;
+	long			cooldown;
+	t_type			the_type;
+
+	long			start_ms;
+
+	pthread_mutex_t	stop_lock;
+	int				is_stoped;
+
+	pthread_mutex_t	log_lock;
+	pthread_mutex_t	arr_lock;
+	long			arr_counter;
+
+	t_dongle		*dongles;
+	t_coder			*coders;
+
+	pthread_t		monitor;
+
+	// Ready barrier
+	pthread_mutex_t	ready_lock;
+	pthread_cond_t	ready_cond;
+	int				ready_count;
+
+}	t_simulation;
+
+
+
+
+long get_current_time(void);
+int parsing(t_simulation *simulation, int argc, char **argv);
+int create_heap(t_heap *heap, int capa);
+void free_heap(t_heap *heap);
+void	sleep_by_ms(long ms);
+int	initialize_data(t_simulation *s);
+
+
+
+#endif
