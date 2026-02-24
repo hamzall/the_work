@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 11:49:21 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 02:59:16 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/24 19:19:19 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static long ft_atol(char *str)
     int i;
 
     if (is_all_digit(str) == 0)
-        return 0;
+        return -1;
 
     res = 0;
     i = 0;

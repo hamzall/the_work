@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:29:33 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 02:51:31 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/24 21:38:29 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	init_global_mutexes(t_simulation *s)
 
 static void	init_dongle_defaults(t_dongle *d)
 {
-	d->held_by = 0;
+	d->held_by = -1;
 	d->cooldown_to = 0;
 	d->the_heap.arr = NULL;
 	d->the_heap.current_size = 0;
@@ -80,7 +80,9 @@ static int	init_one_dongle(t_simulation *s, int i)
 		return (0);
 	if (pthread_cond_init(&s->dongles[i].cond, NULL) != 0)
 		return (pthread_mutex_destroy(&s->dongles[i].mutex), 0);
-	if (create_heap(&s->dongles[i].the_heap, 4) == 0)
+
+	/////
+	if (create_heap(&s->dongles[i].the_heap, s->num_coders) == 0)
 	{
 		pthread_cond_destroy(&s->dongles[i].cond);
 		pthread_mutex_destroy(&s->dongles[i].mutex);
@@ -102,6 +104,7 @@ int	init_dongles(t_simulation *s)
 	i = 0;
 	while (i < s->num_coders)
 	{
+		///////////////////////////
 		if (!init_one_dongle(s, i))
 			return ((i > 0) ? destroy_dongles_upto(s, i - 1) : (free(s->dongles),
 				s->dongles = NULL), 0);
@@ -132,7 +135,7 @@ static void	fill_coder(t_simulation *s, int i)
 	s->coders[i].id = i + 1;
 	s->coders[i].simulation = s;
 	s->coders[i].compiling_counter = 0;
-	s->coders[i].last_compile = 0;
+	//s->coders[i].last_compile = 0;
 	s->coders[i].left = &s->dongles[i];
     if (s->num_coders == 1)
 		s->coders[i].right = NULL;

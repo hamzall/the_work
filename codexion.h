@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 22:58:30 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 02:40:33 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/24 19:20:46 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct s_simulation
 
 	pthread_t		monitor;
 
-	// Ready barrier
+	// is all threads ready to start
 	pthread_mutex_t	ready_lock;
 	pthread_cond_t	ready_cond;
 	int				ready_count;
