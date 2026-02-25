@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 14:29:33 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 21:38:29 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/25 11:29:27 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,11 @@ static void	fill_coder(t_simulation *s, int i)
     if (s->num_coders == 1)
 		s->coders[i].right = NULL;
 	else
+	{
+	////////// my be should
+		//s->coders[i].left = &s->dongles[i];
 		s->coders[i].right = &s->dongles[(i + 1) % s->num_coders];
+	}
 }
 
 int	init_coders(t_simulation *s)

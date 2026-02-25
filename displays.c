@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/24 03:13:00 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 21:39:20 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/25 13:59:05 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char *get_a_status(t_status status)
         return "is refactoring";
     if (status == BURNED_OUT)
         return "burned out";
-    return "Unknown Status\n";
+    return "Unknown Status";
 }
 
 
@@ -60,23 +60,25 @@ void wake_up_all_threads(t_simulation *sim)
         pthread_mutex_unlock(&sim->dongles[i++].mutex);
     }
 }
+
+
 void log_status(t_simulation *sim, int coder_id, t_status st)
 {
-    long    t;
-    int     stopped;
+    long t;
+    int res;
 
-    /* اقرأ stop بأمان */
-    pthread_mutex_lock(&sim->stop_lock);
-    stopped = sim->is_stoped;
-    pthread_mutex_unlock(&sim->stop_lock);
-
-    /* إذا simulation توقفت لا تطبع أي شيء
-       إلا لو الرسالة هي burned out */
-    if (stopped && st != BURNED_OUT)
+    if (get_stop_value(sim) && st != BURNED_OUT)
         return;
 
-    /* اطبع تحت حماية log_lock فقط */
+    
+    // res = get_stop_value(sim);
     pthread_mutex_lock(&sim->log_lock);
+
+    if (get_stop_value(sim) && st != BURNED_OUT)
+    {
+        pthread_mutex_unlock(&sim->log_lock);
+        return;
+    }
 
     t = get_current_time() - sim->start_ms;
     printf("%ld %d %s\n", t, coder_id, get_a_status(st));

@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 22:58:30 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/24 19:20:46 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/25 12:20:34 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,11 @@ int create_heap(t_heap *heap, int capa);
 void free_heap(t_heap *heap);
 void	sleep_by_ms(long ms);
 int	initialize_data(t_simulation *s);
+void set_stop_value(t_simulation *sim, int value);
+void wake_up_all_threads(t_simulation *sim);
+void cleanup_all_data(t_simulation *simulation);
+void *coder_routine(void *argm);
+
 
 
 
