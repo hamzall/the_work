@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 22:58:30 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/27 14:38:52 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/03/01 13:52:06 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_dongle
 	t_heap			the_heap;
 }	t_dongle;
 
+
 typedef struct s_coder
 {
 	int				id;
@@ -77,6 +78,8 @@ typedef struct s_coder
 
 	struct s_simulation	*simulation;
 }	t_coder;
+
+
 
 typedef struct s_simulation
 {
@@ -131,7 +134,7 @@ int heap_pop(t_simulation *sim, t_heap *heap, t_req *element_to_fill);
 void log_status(t_simulation *sim, int coder_id, t_status st);
 void	heap_remove_req(t_simulation *sim, t_heap *heap, t_req req);
 int take_dongle(t_coder *coder, t_dongle *dongle);
-
+void *monitor_routine(void *arg);
 
 
 #endif

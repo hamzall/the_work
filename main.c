@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 22:56:30 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/25 22:32:14 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/03/01 14:27:52 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,26 @@ int main(int argc, char **argv)
     pthread_mutex_unlock(&simulation.ready_lock);
 
 
-    
+    if (pthread_create(&simulation.monitor, NULL, monitor_routine, &simulation) != 0)
+    {
+        set_stop_value(&simulation, 1);
+        wake_up_all_threads(&simulation);
+        
+        i = 0;
+        while (i < simulation.num_coders)
+            pthread_join(simulation.coders[i++].thread, NULL);
+
+        cleanup_all_data(&simulation);
+        return 1;
+    }
+
+    i = 0;
+    while (i < simulation.num_coders)
+        pthread_join(simulation.coders[i++].thread, NULL);
+
+    pthread_join(simulation.monitor, NULL);
 
 
-
-
-
-    
+    cleanup_all_data(&simulation);
     return 0;
 }
