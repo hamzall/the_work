@@ -6,7 +6,7 @@
 /*   By: hel-achh <hel-achh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 22:58:30 by hel-achh          #+#    #+#             */
-/*   Updated: 2026/02/26 14:30:21 by hel-achh         ###   ########.fr       */
+/*   Updated: 2026/02/27 14:38:52 by hel-achh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,12 @@ void wake_up_all_threads(t_simulation *sim);
 void cleanup_all_data(t_simulation *simulation);
 void *coder_routine(void *argm);
 int get_root(t_heap *heap, t_req *element_to_fill);
-
+int heap_push(t_heap *heap, t_req req, t_simulation *sim);
+int get_stop_value(t_simulation *sim);
+int heap_pop(t_simulation *sim, t_heap *heap, t_req *element_to_fill);
+void log_status(t_simulation *sim, int coder_id, t_status st);
+void	heap_remove_req(t_simulation *sim, t_heap *heap, t_req req);
+int take_dongle(t_coder *coder, t_dongle *dongle);
 
 
 
